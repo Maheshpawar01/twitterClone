@@ -18,7 +18,7 @@ const Tweet = () => {
             <p className='text-gray-500 text-sm ml-2'>@username . 1M</p>
             </div>
             <div>
-                <p>Hell you tweetHell you tweetHell you tweet</p>                
+                <p>All your tweets comes here </p>                
             </div>
             <div className='flex justify-between my-3'>
                 <div className='flex items-center hover:text-blue-500 cursor-pointer'>
