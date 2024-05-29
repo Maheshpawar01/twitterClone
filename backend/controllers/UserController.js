@@ -35,7 +35,7 @@ export const Register = async(req, res)=>{
         })
 
     }catch(error){
-        console.log
+        console.log(error)
     }
 }
 
@@ -97,4 +97,36 @@ export const logout = async(req, res)=>{
             message:"User logged out successfully.",
             success:true
         })
+}
+
+//bookmark(user save tweet id not not tweet save user id thats why bookmark comes in userController not in tweetConntroller)
+
+export const bookmark = async (req, res)=>{
+    try {
+        const loggedInUserId = req.body.id;
+        const tweetId = req.params.id;
+        const user = await User.findById(loggedInUserId);
+        if (!user) {
+            // If user is not found, return a 404 error
+            return res.status(404).json({
+              message: "User not found"
+            });
+          }
+
+    if(user.bookmarks.includes(tweetId)){
+        //remove bookmark
+        await User.findByIdAndUpdate(loggedInUserId, {$pull: {bookmarks:tweetId}});
+        res.status(200).json({
+            message:"Already bookmarked"
+        })
+    }else{
+        //bookmark
+        await User.findByIdAndUpdate(loggedInUserId, {$push: {bookmarks:tweetId}});
+        res.status(200).json({
+            message:"Added into bookmarkes"
+        })
+    }
+    } catch (error) {
+        console.log(error);
+    }
 }

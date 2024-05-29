@@ -43,6 +43,22 @@ export const likeorDislike = async (req, res) =>{
     try {
         const loggedInUserId = req.body.id;
         const tweetId = req.params.id;
+        const tweet = await Tweet.findById(tweetId)
+        if(tweet.like.includes(loggedInUserId)){
+            //dislike
+            await Tweet.findByIdAndUpdate(tweetId, {$pull: {like:loggedInUserId}});
+            return res.status(200).json({
+                message:"user dislike tweet"
+            })
+        }
+        else{
+            //like
+            await Tweet.findByIdAndUpdate(tweetId, {$push: {like:loggedInUserId}});
+            return res.status(200).json({
+                message:"user like tweet"
+            })
+
+        }
     } catch (error) {
         console.log(error)
     }
