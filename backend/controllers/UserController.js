@@ -130,3 +130,101 @@ export const bookmark = async (req, res)=>{
         console.log(error);
     }
 }
+
+//getMyProfile to get your profile section
+
+export const getMyProgfile = async(req, res)=>{
+    try {
+        const id = req.params.id;
+        const user = await User.findById(id).select("-password");
+
+        if (!user) {
+            // If user is not found, return a 404 error
+            return res.status(404).json({
+              message: "User not found"
+            });
+          }
+
+        return res.status(200).json({
+            user,
+        })
+
+    } catch (error) {
+     console.log(error)   
+    }
+}
+
+// to get other user (in side bar geting random user)
+
+export const getOtherUsers = async (req, res)=>{
+    try {
+        const {id} = req.params;
+        const otherUsers = await User.find({_id:{$ne:id}}).select("-password");
+
+        if(!otherUsers){
+            return res.status(401).json({
+                message:"currently do not have any user"
+            })
+        };
+        return res.status(200).json({
+            otherUsers
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+//follow  
+
+export const follow = async(req, res)=>{
+    try {
+        const loggedInUserId = req.body.id; // user1 logged in user
+        const userId = req.params.id; //user 2 not logged in user
+        const loggedInUser = await User.findById(loggedInUserId)//user1
+        const user = await User.findById(userId) //user2
+        
+        //user 1 following user 2 and user1 is the follower
+        // if inside user followers loggedinUserId(user1) present 
+        //if user find then it directly runs else block 
+        if(!user.followers.includes(loggedInUserId)){
+            await user.updateOne({$push:{followers : loggedInUserId}})
+            await loggedInUser.updateOne({$push:{following : userId}})
+        }else{
+            return res.statuus(400).json({
+                message:`User already follwed to ${user.name}`
+            })
+        };
+        return res.status(400).json({
+            message:`${loggedInUser.name} just followes ${user.name}`
+        })
+    } catch (error) {
+        
+    }
+}
+
+//unfollow
+
+export const unfollow = async(req, res)=>{
+    try {
+        const loggedInUserId = req.body.id; // user1 logged in user
+        const userId = req.params.id; //user 2 not logged in user
+        const loggedInUser = await User.findById(loggedInUserId)//user1
+        const user = await User.findById(userId) //user2
+
+        // if inside user following loggedinUserId(user1) present then 
+        if(loggedInUser.following.includes(userId)){
+            await user.updateOne({$pull:{followers : loggedInUserId}})
+            await loggedInUser.updateOne({$pull:{following : userId}})
+        }else{
+            return res.status(400).json({
+                message:`User not followed yet`
+            })
+        };
+        return res.status(400).json({
+            message:`${loggedInUser.name} unfollowes ${user.name}`
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+

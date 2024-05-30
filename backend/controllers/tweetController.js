@@ -1,4 +1,5 @@
 import {Tweet} from "../models/tweetSchema.js"
+import {User} from "../models/userSchema.js"
 
 export const createTweet = async(req, res) =>{
     try {
@@ -61,5 +62,45 @@ export const likeorDislike = async (req, res) =>{
         }
     } catch (error) {
         console.log(error)
+    }
+}
+
+//getalltweets get all tweets includes own
+
+export const getAllTweets = async (req, res)=>{
+    //loggedInUser + following tweets 
+
+    try {
+        const id = req.params.id;
+        const loggedInUser = await User.findById(id);
+        const loggedInUserTweets = await Tweet.find({userId:id})
+        const followingUserTweet = await Promise.all(loggedInUser.following.map((otherUsersId)=>{
+            return Tweet.find({userId: otherUsersId})
+        }))
+        return res.status(200).json({
+            tweets:loggedInUserTweets.concat(...followingUserTweet)
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+//following tweets: get all following tweets
+//we want to send all following people tweets except own
+
+export const getFollowingTweets = async (req, res)=>{
+    try {
+        const id = req.params.id;
+        const loggedInUser = await User.findById(id);
+        // const loggedInUserTweets = await Tweet.find({userId:id})
+        const followingUserTweet = await Promise.all(loggedInUser.following.map((otherUsersId)=>{
+            return Tweet.find({userId: otherUsersId})
+        }))
+        return res.status(200).json({
+            tweets:[].concat(...followingUserTweet)
+        })
+    } catch (error) {
+        
     }
 }
