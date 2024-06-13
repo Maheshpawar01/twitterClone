@@ -17,7 +17,7 @@ const Profile = () => {
           </div>
         </div>
         <img
-          src="http://www.designbolts.com/wp-content/uploads/2014/06/Polygon-twitter-header-background.jpg"
+          src="https://i.pinimg.com/originals/1e/e3/c7/1ee3c7f298a5813ff8f8f13907191701.jpg"
           alt="Banner Image"
         />
         <div className="absolute top-52 ml-4 border-4 border-white rounded-full">
