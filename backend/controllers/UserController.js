@@ -64,7 +64,7 @@ export const Login = async(req, res) =>{
             })
         }
 
-        // compare ppasswords
+        // compare passwords
         //changed from "User" to 'user' for the instance
         const isMatch = await bcryptjs.compare(password,user.password )
         if(!isMatch){
@@ -83,6 +83,7 @@ export const Login = async(req, res) =>{
             httpOnly:true
         }).json({
             message:`welcome back ${user.name}`,
+            user,
             success:true
         })
     } catch (error) {
@@ -133,7 +134,7 @@ export const bookmark = async (req, res)=>{
 
 //getMyProfile to get your profile section
 
-export const getMyProgfile = async(req, res)=>{
+export const getMyProfile = async(req, res)=>{
     try {
         const id = req.params.id;
         const user = await User.findById(id).select("-password");
