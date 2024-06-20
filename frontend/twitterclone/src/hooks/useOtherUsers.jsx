@@ -2,25 +2,26 @@ import React, { useEffect } from 'react'
 import axios from "axios"
 import { USER_API_END_POINT } from '../utils/constant'
 import { useDispatch } from 'react-redux'
-import { getMyProfile } from '../redux/userSlice'
+import { getMyProfile, getOtherUsers } from '../redux/userSlice'
 
-const useGetProfile = (id) => {
+const useOtherUsers = (id) => {
   const dispatch = useDispatch();
    useEffect(()=>{
-    const fetchMyProfile = async()=>{
+    const fetchOtherUsers = async()=>{
       try {
-        const res = await axios.get(`${USER_API_END_POINT}/profile/${id}`,{
+        const res = await axios.get(`${USER_API_END_POINT}/otherUser/${id}`,{
           withCredentials:true
         });
         console.log(res)
-        dispatch(getMyProfile(res.data.user))
+        dispatch(getOtherUsers(res.data.otherUsers))
     } catch (error) {
         console.log(error)
     }
     }
-    fetchMyProfile();
+    fetchOtherUsers();
 
-   }, [id])
+   }, [])
+
 }
 
-export default useGetProfile;
+export default useOtherUsers;

@@ -7,10 +7,12 @@ import { IoPersonOutline } from "react-icons/io5";
 import { CiBookmark } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
 import { Link } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 
 
 const LeftSidebar = () => {
+  const {user, profile} = useSelector(store=>store.user);
+
   return (
     <div className='w-[20%]'>
         <div>
@@ -32,7 +34,7 @@ const LeftSidebar = () => {
             <h1 className='font-bold text-lg ml-2'>Notification</h1>
             </Link>
             
-            <Link to="/profile" className='flex items-center my-2 px-4 py-2 hover:bg-gray-200 hover:cursor-pointer rounded-full'>
+            <Link to={`/profile/${user?._id}`} className='flex items-center my-2 px-4 py-2 hover:bg-gray-200 hover:cursor-pointer rounded-full'>
             <IoPersonOutline size={"24px"}/> 
             <h1 className='font-bold text-lg ml-2'>Profile</h1>
             </Link>
@@ -52,4 +54,4 @@ const LeftSidebar = () => {
   )
 }
 
-export default LeftSidebar
+export default LeftSidebar;
