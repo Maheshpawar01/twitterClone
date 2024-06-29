@@ -1,10 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Avatar from 'react-avatar';
 import { CiImageOn } from "react-icons/ci";
-
-
+import axios from "axios";
+import toast from "react-hot-toast"
+import {useDispatch, useSelector} from 'react-redux'
+import { getAllTweets, getRefresh } from '../redux/tweetSlice';
+import { TWEET_API_END_POINT } from '../utils/constant';
 
 const CreatePost = () => {
+  const [description, setDescription] = useState("")
+  const {user} = useSelector(store=>store.user)
+  const dispatch = useDispatch();
+  const submitHandler = async () =>{
+    try {
+      const res = await axios.post(`${ TWEET_API_END_POINT}/create`, {description, id:user?._id},{
+        withCredentials:true,
+      })
+      dispatch(getRefresh())
+      if(res.data.success){
+        toast.success(res.data.message)
+      }
+    } catch (error) {
+      toast.error(error.response.data.message)
+      console.log(error)
+    }
+    setDescription("")
+  }
+
+  const followingTweetHandler = async()=>{
+    const id = user?._id;
+    try {
+      axios.defaults.withCredentials = true;
+      const res = await axios.get(`${TWEET_API_END_POINT}/followingtweets/${id}`)
+      console.log(res);
+      dispatch(getAllTweets(res.data.tweets));
+      // dispatch(getRefresh())
+      toast.success(res.data.message)
+
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response.data.message)
+    }
+  }
   return (
     <div >
      <div>
@@ -12,7 +49,7 @@ const CreatePost = () => {
         <div className='hover:bg-gray-200 w-full text-center px-4 py-2'>
             <h1 className='font-semibold text-gray-500 text-lg cursor-pointer'>For You</h1>
         </div>
-        <div className='hover:bg-gray-200 w-full text-center px-4 py-2'>
+        <div onClick={followingTweetHandler} className='hover:bg-gray-200 w-full text-center px-4 py-2'>
             <h1 className='font-semibold text-gray-500 text-lg cursor-pointer'>Following</h1>
         </div>
       </div>
@@ -22,14 +59,14 @@ const CreatePost = () => {
             <div>
             <Avatar src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=600" size="40" round={true} />
             </div>
-            <input className='w-full outline-none border-none text-xl ml-2' type="text" placeholder='What is happening?' />
+            <textarea value={description} onChange={(e)=>setDescription(e.target.value)} className='w-full outline-none border-none text-xl ml-2 p-2 border border-gray-300 rounded-md resize-none overflow-hidden break-words' type="text" placeholder='What is happening?' />
         </div>
 
         <div className='flex items-center justify-between p-4 border-b border-gray-200'>
           <div>
             <CiImageOn size={'24px'}/>
           </div>
-        <button className='px-4 py-1 border-none text-medium bg-[#109BF0] rounded-full text-white font-bold'>Post</button>
+        <button onClick={submitHandler} className='px-4 py-1 border-none text-medium bg-[#109BF0] rounded-full text-white font-bold'>Post</button>
 
         </div>
       </div>

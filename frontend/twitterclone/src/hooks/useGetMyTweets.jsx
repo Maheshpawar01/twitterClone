@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import axios from "axios";
 import { TWEET_API_END_POINT } from '../utils/constant';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllTweets } from '../redux/tweetSlice';
 
 // Custom hook to fetch tweets
 const useGetMyTweets = (id) => {
   const dispatch = useDispatch(); // Ensure this is called within a Provider context
-
+  const {refresh} = useSelector(store=>store.tweet)
   useEffect(() => {
     const fetchMyTweets = async () => {
       try {
@@ -22,7 +22,7 @@ const useGetMyTweets = (id) => {
     }
 
     fetchMyTweets();
-  },[id]); // Include dispatch in the dependency array
+  },[id, refresh]); // Include dispatch in the dependency array
 };
 
 export default useGetMyTweets;
