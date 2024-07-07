@@ -1,5 +1,0 @@
-atlas:
-username:maheshpawar
-Password:twitterclone
-
-mongodb+srv://maheshpawar:twitterclone@cluster0.hclutii.mongodb.net/
