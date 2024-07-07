@@ -4,12 +4,13 @@ import { CiImageOn } from "react-icons/ci";
 import axios from "axios";
 import toast from "react-hot-toast"
 import {useDispatch, useSelector} from 'react-redux'
-import { getAllTweets, getRefresh } from '../redux/tweetSlice';
+import { getAllTweets, getIsActive, getRefresh } from '../redux/tweetSlice';
 import { TWEET_API_END_POINT } from '../utils/constant';
 
 const CreatePost = () => {
   const [description, setDescription] = useState("")
   const {user} = useSelector(store=>store.user)
+  const {isActive} = useSelector(store=>store.tweet)
   const dispatch = useDispatch();
   const submitHandler = async () =>{
     try {
@@ -27,30 +28,23 @@ const CreatePost = () => {
     setDescription("")
   }
 
-  const followingTweetHandler = async()=>{
-    const id = user?._id;
-    try {
-      axios.defaults.withCredentials = true;
-      const res = await axios.get(`${TWEET_API_END_POINT}/followingtweets/${id}`)
-      console.log(res);
-      dispatch(getAllTweets(res.data.tweets));
-      // dispatch(getRefresh())
-      toast.success(res.data.message)
-
-    } catch (error) {
-      console.log(error)
-      toast.error(error.response.data.message)
-    }
+  const forYouHandler = ()=>{
+    dispatch(getIsActive(true))
   }
+  const followingHandler = ()=>{
+    dispatch(getIsActive(false))
+  }
+
+
   return (
     <div >
      <div>
         <div className='flex items-center justify-between border-b border-gray-200'>
-        <div className='hover:bg-gray-200 w-full text-center px-4 py-2'>
-            <h1 className='font-semibold text-gray-500 text-lg cursor-pointer'>For You</h1>
+        <div onClick={forYouHandler} className={`${isActive ? "border-b-4 border-blue-500" : "border-b-4 border-transparent"} hover:bg-gray-200 w-full text-center px-4 py-2`}>
+            <h1  className='font-semibold text-gray-500 text-lg cursor-pointer'>For You</h1>
         </div>
-        <div onClick={followingTweetHandler} className='hover:bg-gray-200 w-full text-center px-4 py-2'>
-            <h1 className='font-semibold text-gray-500 text-lg cursor-pointer'>Following</h1>
+        <div onClick={followingHandler} className={`${!isActive ? "border-b-4 border-blue-500" : "border-b-4 border-transparent"} hover:bg-gray-200 w-full text-center px-4 py-2`}>
+            <h1  className='font-semibold text-gray-500 text-lg cursor-pointer'>Following</h1>
         </div>
       </div>
       {/* twitt section */}

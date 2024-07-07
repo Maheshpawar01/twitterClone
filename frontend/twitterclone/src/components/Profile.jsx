@@ -2,8 +2,13 @@ import React from "react";
 import Avatar from "react-avatar";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import useGetProfile from '../hooks/useGetProfile'
+import axios from "axios";
+import { USER_API_END_POINT } from "../utils/constant";
+import toast from "react-hot-toast";
+import { getRefresh } from "../redux/tweetSlice";
+import { followingUpdate } from "../redux/userSlice";
 
 
 const Profile = () => {
@@ -15,6 +20,39 @@ const Profile = () => {
   // console.log(user?._id)
   useGetProfile(id);
   // useGetProfile(profile?._id);
+  const dispatch =  useDispatch();
+
+  const followAndUnfollowHandler = async()=>{
+    //follow and unfollow logic
+    if(user.following.includes(id)){
+      //unfollow
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.post(`${USER_API_END_POINT}/unfollow/${id}`, {id:user?._id});
+        dispatch(followingUpdate(id))
+        dispatch(getRefresh())
+        toast.success(res.data.message)
+      } catch (error) {
+        toast.error(error.response.data.message)
+        console.log(error);
+      }
+
+    }else{
+      //follow
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.post(`${USER_API_END_POINT}/follow/${id}`, {id:user?._id});
+        dispatch(followingUpdate(id));
+        dispatch(getRefresh())
+        toast.success(res.data.message)
+      } catch (error) {
+        toast.success(error.response.data.message)
+        console.log(error);
+
+      }
+
+    }
+  }
 
   return (
     <div className="w-[50%] border-l border-r border-gray-300">
@@ -38,14 +76,20 @@ const Profile = () => {
         </div>
 
           <div className="text-right m-4">
-            <button className="px-4 py-1 rounded-full border border-gray-400 hover:bg-gray-200">Edit Profile</button>
+          {
+              profile?._id === user?._id ? (
+                <button className="px-4 py-1 rounded-full border border-gray-400 hover:bg-gray-200">Edit Profile</button>    
+              ):(
+                <button onClick={followAndUnfollowHandler} className="px-4 py-1 bg-black rounded-full border border-gray-400 hover:bg-gray-200 hover:text-black text-white">{user.following.includes(id) ? "Following" : "Follow"}</button>    
+              )
+            }
           </div>
 
           <div className="m-4">
             <h1 className="font-bold text-xl">{profile?.name}</h1>
             <p>{`@${profile?.username}`}</p>
           </div>
-          <div className="m-4">
+          <div className="m-4 text-sm">
             <p>You bio comes here Hello every one this is my bio</p>
           </div>
       </div>

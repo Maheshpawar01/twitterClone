@@ -191,7 +191,7 @@ export const follow = async(req, res)=>{
             await user.updateOne({$push:{followers : loggedInUserId}})
             await loggedInUser.updateOne({$push:{following : userId}})
         }else{
-            return res.statuus(400).json({
+            return res.status(400).json({
                 message:`User already follwed to ${user.name}`
             })
         };
@@ -199,7 +199,7 @@ export const follow = async(req, res)=>{
             message:`${loggedInUser.name} just followes ${user.name}`
         })
     } catch (error) {
-        
+        console.log(error)
     }
 }
 
