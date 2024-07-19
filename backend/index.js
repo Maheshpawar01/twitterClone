@@ -21,7 +21,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 const corsOptions = {
-    origin:"https://twitter-clone-five-mu.vercel.app",
+    origin:"https://twittercloneproj.onrender.com",
     credentials:true
 }
 
