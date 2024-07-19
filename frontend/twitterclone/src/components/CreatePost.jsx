@@ -14,7 +14,7 @@ const CreatePost = () => {
   const dispatch = useDispatch();
   const submitHandler = async () =>{
     try {
-      const res = await axios.post(`${ TWEET_API_END_POINT}/create`, {description, id:user?._id},{
+      const res = await axios.post(`${TWEET_API_END_POINT}/create`, {description, id:user?._id},{
         withCredentials:true,
       })
       dispatch(getRefresh())
