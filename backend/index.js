@@ -12,6 +12,12 @@ dotenv.config({
 databaseConnection();
 const app = express();
 
+const corsOptions = {
+    origin:"https://twitter-clone-one-pied.vercel.app",
+    credentials:true
+}
+
+app.use(cors(corsOptions));
 
 //middlewares
 app.use(express.urlencoded({
@@ -20,12 +26,6 @@ app.use(express.urlencoded({
 app.use(express.json())
 app.use(cookieParser())
 
-const corsOptions = {
-    origin:"https://twittercloneproj.onrender.com",
-    credentials:true
-}
-
-app.use(cors(corsOptions));
 
 //route
 
