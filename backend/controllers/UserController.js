@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken"
 export const Register = async(req, res)=>{
     try{
         const{name, username, email, password} = req.body;
+        //basic validation
         if(!name || !username || !email || !password){
             return res.status(400).json({
                 message:"All fields are rerquired,",
@@ -48,7 +49,7 @@ export const Login = async(req, res) =>{
 
         //validate input
         if(!email || !password){
-            return res.status(400).json({
+            return res.status(401).json({
                 message:"All fields are rerquired,",
                 success:false,
             })
@@ -77,7 +78,7 @@ export const Login = async(req, res) =>{
         //Genrate a JWT token
         //changed from "user" to 'user' for the instance
 
-        const token = await jwt.sign({_id: user._id}, process.env.TOKEN_SECRET, {expiresIn: "1d"})
+        const token = await jwt.sign({userId: user._id}, process.env.TOKEN_SECRET, {expiresIn: "1d"})
         return res.status(201).cookie("token", token, {
             expiresIn:"1d", 
             httpOnly:true
@@ -164,7 +165,7 @@ export const getOtherUsers = async (req, res)=>{
 
         if(!otherUsers){
             return res.status(401).json({
-                message:"currently do not have any user"
+                message:"currently do not have any users"
             })
         };
         return res.status(200).json({

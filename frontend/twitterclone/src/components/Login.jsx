@@ -49,6 +49,7 @@ const Login = () => {
         });
         if(res.data.success){
           toast.success(res.data.message)
+          navigate("/")
         }
         // console.log(res)
 
