@@ -18,13 +18,13 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions));
+app.use(cookieParser())
+app.use(express.json())
 
 //middlewares
 app.use(express.urlencoded({
     extended:true
 }));
-app.use(express.json())
-app.use(cookieParser())
 
 
 //route
