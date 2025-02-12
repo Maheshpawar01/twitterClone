@@ -25,7 +25,9 @@ const useGetMyTweets = (id) => {
     // const id = user?._id;
     try {
       axios.defaults.withCredentials = true;
-      const res = await axios.get(`${TWEET_API_END_POINT}/followingtweets/${id}`)
+      const res = await axios.get(`${TWEET_API_END_POINT}/followingtweets/${id}`,{
+        withCredentials:true
+      });
       console.log(res);
       dispatch(getAllTweets(res.data.tweets));
       // dispatch(getRefresh())
