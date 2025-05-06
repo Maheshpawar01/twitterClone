@@ -2,7 +2,8 @@
 
 This is a simple full-stack **Twitter Clone** project where users can sign up, log in, create tweets, view all tweets, follow other users, and more. It is built using the **MERN Stack** (MongoDB, Express, React, Node.js).
 
-### Website Link: [https://mahesh-portfolio-flame.vercel.app/)](https://twitter-clone-one-pied.vercel.app/)
+## Website Link:## https://twitter-clone-one-pied.vercel.app/login
+
 ![Screenshot 2025-05-06 222712](https://github.com/user-attachments/assets/87c4b32d-90fd-4392-b11f-23d2dcd71673)
 
 ---
