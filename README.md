@@ -1,4 +1,4 @@
-- # Twitter Clone
+## Twitter Clone
 
 This is a simple full-stack **Twitter Clone** project where users can sign up, log in, create tweets, view all tweets, follow other users, and more. It is built using the **MERN Stack** (MongoDB, Express, React, Node.js).
 
