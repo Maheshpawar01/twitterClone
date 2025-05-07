@@ -26,16 +26,13 @@ This is a simple full-stack **Twitter Clone** project where users can sign up, l
 ### Frontend
 - React
 - Tailwind CSS
-- Axios
-- React Router
 - Redux
 
 ### Backend
 - Node.js
 - Express.js
 - MongoDB
-- JWT (JSON Web Token)
-- bcrypt (for password hashing)
+
 
 ---
 ## Features
