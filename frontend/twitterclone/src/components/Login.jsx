@@ -29,7 +29,7 @@ const Login = () => {
         });
         dispatch(getUser(res?.data?.user));
         if(res.data && res.data.success){
-          navigate("/");
+          navigate("/home");
           toast.success(res.data.message)
         }
         // console.log(res)
@@ -49,7 +49,7 @@ const Login = () => {
         });
         if(res.data.success){
           toast.success(res.data.message)
-          navigate("/")
+          navigate("/home")
         }
         // console.log(res)
 

@@ -25,7 +25,7 @@ const LeftSidebar = () => {
       dispatch(getOtherUsers(null));
       dispatch(getMyProfile(null));
       // dispatch(getMyProfile(null));
-      navigate('/login')
+      navigate('/')
       toast.success(res.data.message)
     } catch (error) {
       console.log(error)
