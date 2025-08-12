@@ -56,7 +56,6 @@ export const Login = async(req, res) =>{
         };
 
         //find the user by email
-        //changed from "User" user for the instance
         const user = await User.findOne({email});
         if(!user){
             return res.status(401).json({
@@ -66,7 +65,6 @@ export const Login = async(req, res) =>{
         }
 
         // compare passwords
-        //changed from "User" to 'user' for the instance
         const isMatch = await bcryptjs.compare(password,user.password )
         if(!isMatch){
             return res.status(401).json({
@@ -76,8 +74,6 @@ export const Login = async(req, res) =>{
         }
 
         //Genrate a JWT token
-        //changed from "user" to 'user' for the instance
-
         const token = await jwt.sign({userId: user._id}, process.env.TOKEN_SECRET, {expiresIn: "1d"})
         return res.status(201).cookie("token", token, {
             expiresIn:"1d", 
@@ -102,8 +98,6 @@ export const logout = async(req, res)=>{
             success:true
         })
 }
-
-//bookmark(user save tweet id not not tweet save user id thats why bookmark comes in userController not in tweetConntroller)
 
 export const bookmark = async (req, res)=>{
     try {
@@ -135,8 +129,6 @@ export const bookmark = async (req, res)=>{
     }
 }
 
-//getMyProfile to get your profile section
-
 export const getMyProfile = async(req, res)=>{
     try {
         const id = req.params.id;
@@ -158,7 +150,7 @@ export const getMyProfile = async(req, res)=>{
     }
 }
 
-// to get other user (in side bar geting random user)
+// to get other user (sidebar geting random user)
 
 export const getOtherUsers = async (req, res)=>{
     try {
@@ -187,9 +179,6 @@ export const follow = async(req, res)=>{
         const loggedInUser = await User.findById(loggedInUserId)//user1
         const user = await User.findById(userId) //user2
         
-        //user 1 following user 2 and user1 is the follower
-        // if inside user followers loggedinUserId(user1) present 
-        //if user find then it directly runs else block 
         if(!user.followers.includes(loggedInUserId)){
             await user.updateOne({$push:{followers : loggedInUserId}})
             await loggedInUser.updateOne({$push:{following : userId}})
@@ -215,7 +204,6 @@ export const unfollow = async(req, res)=>{
         const loggedInUser = await User.findById(loggedInUserId)//user1
         const user = await User.findById(userId) //user2
 
-        // if inside user following loggedinUserId(user1) present then 
         if(loggedInUser.following.includes(userId)){
             await user.updateOne({$pull:{followers : loggedInUserId}})
             await loggedInUser.updateOne({$pull:{following : userId}})
